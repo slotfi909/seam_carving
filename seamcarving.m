@@ -3,8 +3,8 @@ clc; clear; close all;
 percentage = 0.3;
 
 name = 'Snowman';
-orgimg = imread(['C:\Users\Mohammad Mahdi\Desktop\CV_Project\Samples dataset\' name '\' name '.png']);
-orgmap = imread(['C:\Users\Mohammad Mahdi\Desktop\CV_Project\Samples dataset\' name '\' name '_SMap.png']);
+orgimg = imread(['..\data\Samples dataset\' name '\' name '.png']);
+orgmap = imread(['../data/Samples dataset\' name '\' name '_SMap.png']);
 img = orgimg;
 emap = orgmap;
 seamgraph = zeros(size(img,1),size(img,2));
