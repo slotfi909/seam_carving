@@ -2,10 +2,11 @@ clc; clear; close all;
 
 percentage = 0.3;
 
-orgimg = imread('../data/Samples dataset/Baby/Baby.png');
-orgmap = imread('../data/Samples dataset/Baby/Baby_SMap.png');
+orgimg = im2double(imread('../data/Samples dataset/Baby/Baby.png'));
+salmap = im2double(imread('../data/Samples dataset/Baby/Baby_SMap.png'));
+edgemap = edge(rgb2gray(orgimg));
 img = orgimg;
-emap = orgmap;
+emap = salmap;
 
 seamgraph = zeros(size(img,1),size(img,2));
 seamgraph(1,:) = emap(1,:); 
@@ -15,12 +16,18 @@ diff = size(img,2)*percentage;
 for l=1:diff
 for i=2:size(img,1)
     for j=1:size(img,2)
-        if j==1
-            seamgraph(i,j)=emap(i,j) + min([seamgraph(i-1,j) seamgraph(i-1,j+1)]);
-        elseif j==size(img,2)
-            seamgraph(i,j)=emap(i,j) + min([seamgraph(i-1,j-1) seamgraph(i-1,j)]);
+        if j==1 % if in first column
+            seamgraph(i,j)=emap(i,j) + min([seamgraph(i-1,j) seamgraph(i-1,j+1)]); % corresponding
+                % seamgraph value for current pixel is equal to emap value
+                % + min(upper, upper-right) seamgraph value
+        elseif j==size(img,2) % if in last column
+            seamgraph(i,j)=emap(i,j) + min([seamgraph(i-1,j-1) seamgraph(i-1,j)]); % corresponding
+                % seamgraph value for current pixel is equal to emap value
+                % + min(upper, upper-left) seamgraph value
         else
-            seamgraph(i,j)=emap(i,j) + min([seamgraph(i-1,j-1) seamgraph(i-1,j) seamgraph(i-1,j+1)]);
+            seamgraph(i,j)=emap(i,j) + min([seamgraph(i-1,j-1) seamgraph(i-1,j) seamgraph(i-1,j+1)]); % if anywhere
+            % other than start and end, seamgraph value is equal to pixel
+            % value + min(upper-left,upper,upper-right) seamgraph value
         end
     end
 end
